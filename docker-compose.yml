@@ -1,0 +1,28 @@
+services:
+  odoo:
+    image: odoo:17.0
+    volumes:
+      - odoo-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+    env_file: ".env"
+    networks:
+      - database
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.${TRAEFIK_SERVICE}.rule=Host(`${ODOO_HOST}`)"
+      - "traefik.http.routers.${TRAEFIK_SERVICE}.service=${TRAEFIK_SERVICE}"
+      - "traefik.http.services.${TRAEFIK_SERVICE}.loadbalancer.server.port=8069"
+      - "traefik.http.routers.${TRAEFIK_SERVICE}.entrypoints=${TRAEFIK_ENTRYPOINTS}"
+      - "${TRAEFIK_CERTRESOLVER_LABEL}"
+
+networks:
+  database:
+    external: true
+  traefik:
+    external: true
+
+volumes:
+  odoo-data:

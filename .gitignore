@@ -1,0 +1,7 @@
+/.env
+
+/addons/*
+!/addons/.gitkeep
+
+/config/*
+!/config/.gitkeep
