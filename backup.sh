@@ -2,13 +2,17 @@
 
 source .env
 
-docker run --rm \
-    -v ${VOLUME_NAME}:/odoo-data \
-    -v "$(pwd)":/mount \
-    busybox \
-    tar -zcf /mount/backups/odoo-data.tar.gz ./odoo-data
+ODOO_FOLDER=$(pwd)
 
-tar -zcf backups/odoo-addons.tar.gz ./addons
-tar -zcf backups/odoo-config.tar.gz ./config
+pushd ${BACKUPS_FOLDER}
+    docker run --rm \
+        -v ${VOLUME_NAME}:/odoo-data \
+        -v "$(pwd)":/mount \
+        busybox \
+        tar -zcf /mount/odoo-data.tar.gz ./odoo-data
 
-echo "The last backup was made at: `date +%F\T%T\Z`" > backups/odoo-lastbackup.info
+    tar -zcf odoo-addons.tar.gz --absolute-names ${ODOO_FOLDER}/addons
+    tar -zcf odoo-config.tar.gz --absolute-names ${ODOO_FOLDER}/config
+
+    echo "The last backup was made at: `date +%F\T%T\Z`" > odoo-lastbackup.info
+popd
