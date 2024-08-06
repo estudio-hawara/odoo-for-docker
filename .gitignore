@@ -5,3 +5,6 @@
 
 /config/*
 !/config/.gitkeep
+
+/backups/*
+!/backups/.gitkeep
