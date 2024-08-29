@@ -1,0 +1,24 @@
+#!/bin/bash
+
+source .env
+
+docker compose down
+
+pushd backups/
+    docker run --rm \
+        -v $VOLUME_NAME:/odoo-data \
+        -v "$(pwd)":/mount \
+        busybox \
+        rm -rf odoo-data/*
+
+    docker run --rm \
+        -v $VOLUME_NAME:/odoo-data \
+        -v "$(pwd)":/mount \
+        busybox \
+        tar -C odoo-data/ -zxf /mount/odoo-data.tar.gz
+popd
+
+rm -rf addons/* && tar -C addons/ -zxf backups/odoo-addons.tar.gz
+rm -rf config/* && tar -C config/ -zxf backups/odoo-config.tar.gz
+
+docker compose up -d

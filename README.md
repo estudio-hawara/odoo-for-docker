@@ -33,3 +33,17 @@ docker compose up -d
 ```
 
 You should now be able to access your Docker instance by visiting `http://${ODOO_HOST}` (or `https`, depending on your settings).
+
+## Backup and Restore
+
+### Backup
+
+You can create a backup of your addons, configuration and data files by running the `backup` host script. That will create 3 files in the `backups/` folder:
+
+- odoo-addons.tar.gz
+- odoo-config.tar.gz
+- odoo-data.tar.gz
+
+### Restore
+
+You can restore the backup that's in the `backups/` folder by running the `restore` host script.
