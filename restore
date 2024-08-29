@@ -7,7 +7,7 @@ docker compose down
 pushd backups/
     docker run --rm \
         -v $VOLUME_NAME:/odoo-data \
-        -v "$(pwd)":/mount \
+        -u root \
         busybox \
         rm -rf odoo-data/*
 

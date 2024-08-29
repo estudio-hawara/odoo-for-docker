@@ -9,7 +9,7 @@ pushd backups/
         -v $VOLUME_NAME:/odoo-data \
         -v "$(pwd)":/mount \
         busybox \
-        tar -zcf /mount/odoo-data.tar.gz ./odoo-data
+        tar -C ./odoo-data -zcf /mount/odoo-data.tar.gz .
 popd
 
 tar -C addons/ -zcf backups/odoo-addons.tar.gz .
