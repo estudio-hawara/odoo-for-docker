@@ -1,6 +1,10 @@
 services:
   odoo:
-    image: odoo:${ODOO_VERSION}
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+      args:
+        ODOO_VERSION: "17.0"
     restart: always
     volumes:
       - odoo-data:/var/lib/odoo
