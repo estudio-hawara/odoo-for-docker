@@ -34,6 +34,14 @@ docker compose up -d
 
 You should now be able to access your Docker instance by visiting `http://${ODOO_HOST}` (or `https`, depending on your settings).
 
+### Open a Python Shell
+
+To open a Python shell with Odoo loaded, you can use the `open-shell` command that's preinstalled in your container:
+
+```bash
+docker compose exec odoo open-shell
+```
+
 ## Backup and Restore
 
 ### Backup
@@ -47,3 +55,17 @@ You can create a backup of your addons, configuration and data files by running 
 ### Restore
 
 You can restore the backup that's in the `backups/` folder by running the `restore` host script.
+
+## Run a Test Suite
+
+To run Odoo's tests, use the `run-tests` preinstalled command in a disposable container:
+
+```bash
+docker compose run --rm odoo run-tests
+```
+
+As the former command would run all the available tests, you may want to limit the tests by filtering them with a tag.
+
+```bash
+docker compose run --rm odoo run-tests --test-tags faker
+```

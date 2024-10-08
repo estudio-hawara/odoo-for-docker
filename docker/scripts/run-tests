@@ -1,0 +1,7 @@
+#!/bin/bash
+
+odoo --test-enable "$@" \
+    -d $USER \
+    --db_user $USER \
+    --db_host $HOST \
+    --db_password $PASSWORD \
