@@ -4,7 +4,7 @@ services:
       context: ./docker
       dockerfile: Dockerfile
       args:
-        ODOO_VERSION: "17.0"
+        ODOO_VERSION: ${ODOO_VERSION}
     restart: always
     volumes:
       - odoo-data:/var/lib/odoo

@@ -2,4 +2,4 @@ ARG ODOO_VERSION
 
 FROM odoo:${ODOO_VERSION}
 
-RUN python3 -m pip install Faker
+RUN pip3 install Faker --break-system-packages
