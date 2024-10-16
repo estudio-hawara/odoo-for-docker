@@ -12,7 +12,7 @@ services:
       - ./addons:/mnt/extra-addons
     env_file: ".env"
     networks:
-      - database
+      - postgresql
       - traefik
     labels:
       - "traefik.enable=true"
@@ -24,7 +24,7 @@ services:
       - "${TRAEFIK_CERTRESOLVER_LABEL}"
 
 networks:
-  database:
+  postgresql:
     external: true
   traefik:
     external: true
