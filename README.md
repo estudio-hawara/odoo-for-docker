@@ -52,9 +52,17 @@ You can create a backup of your addons, configuration and data files by running 
 - odoo-config.tar.gz
 - odoo-data.tar.gz
 
+Also, remember to backup your database.
+
+> [!NOTE]
+> If you are using the sibling project [postgresql-for-docker](https://github.com/estudio-hawara/postgresql-for-docker/), check the [Backup the databases](https://github.com/estudio-hawara/postgresql-for-docker/blob/main/README.md#backup-the-databases) section of its README file.
+
 ### Restore
 
-You can restore the backup that's in the `backups/` folder by running the `restore` host script.
+You can restore the backup that's in the `backups/` folder by running the `restore` host script. Keep in mind that this will restore your files but it won't restore your database.
+
+> [!NOTE]
+> If you are using the sibling project [postgresql-for-docker](https://github.com/estudio-hawara/postgresql-for-docker/), check the [Restore a backup](https://github.com/estudio-hawara/postgresql-for-docker/blob/main/README.md#restore-a-backup) section of its README file.
 
 ## Run a Test Suite
 
@@ -69,3 +77,53 @@ As the former command would run all the available tests, you may want to limit t
 ```bash
 docker compose run --rm odoo run-tests --test-tags faker
 ```
+
+## Upgrade
+
+To run an upgrade, for instance from version 17.0 to 18.0, these are the steps.
+
+### Make a backup
+
+Before running a long and complex process like an upgrade, backup your database and files. You have instructions on how to do it above in this same document.
+
+### Update your environment
+
+Change the value of your `ODOO_VERSION` in your **.env** file.
+
+```bash
+# nano .env
+ODOO_VERSION=18.0
+```
+
+### Build the new Docker image
+
+Build the updated images and check the logs to see if everything seems correct.
+
+```bash
+docker compose down
+docker compose build --no-cache
+docker compose up -d
+```
+
+#### Fixes for known issues
+
+##### File permissions
+
+If your logs end with this error message:
+
+> AssertionError: /var/lib/odoo/sessions: directory is not writable
+
+You may want to check the permissions of the entire **odoo-data** folder.
+
+```bash
+# docker compose exec -u root odoo bash
+chown -R odoo:odoo /var/lib/odoo
+```
+
+##### Incompatible modules
+
+If your logs end with this error message:
+
+> ValueError: Module {some_module_name_here}: invalid manifest
+
+You may want to upgrade the module. Check it's `version` attribute in its manifest file.
